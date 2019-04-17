@@ -16,7 +16,7 @@ This is a Simple GUI Demo of the bottled water selling Program.
       <img src="example/2.PNG", width="400">
   </div>
 
-  ### Or，there isn't such an item, the following information will also be displayed
+  ### Or，there isn't such an item, the following information will also be displayed, showing that there isn't such an item
   
   <div align="center">
        <img src="example/3.PNG", width="400">
