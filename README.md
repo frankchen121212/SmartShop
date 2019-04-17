@@ -1,7 +1,7 @@
 # Smart Shop
 
 ## Introduction
-This is a Simple GUI Demo of the 
+This is a Simple GUI Demo of the bottled water selling Program.
 
 ## First the Program will give the default imformation for setup
 <div align="center">
