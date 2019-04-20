@@ -7,21 +7,23 @@ Demo_0.4_audio adds the function that record one's voice therefore give back the
 
 ## Demo_0.3 
 
-### First the Program will give the default imformation for setup
+ First the Program will give the default imformation for setup
 <div align="center">
     <img src="example/default.PNG", width="300">
 </div>
 
-### After Entering the 13-bit bar code numbers, the system will look up the information in items.csv
+ After Entering the 13-bit bar code numbers, the system will look up the information in items.csv
 
-  #### If there is such item, Commodity information will be displayed
+  If there is such item, Commodity information will be displayed
   <div align="center">
       <img src="example/1.PNG", width="300">
       <img src="example/2.PNG", width="300">
   </div>
 
-  #### Or，there isn't such an item, the following information will also be displayed, showing that there isn't such an item
+  Or，there isn't such an item, the following information will also be displayed, showing that there isn't such an item
   
   <div align="center">
        <img src="example/3.PNG", width="300">
   </div>
+  
+## Demo_0.4_audio
