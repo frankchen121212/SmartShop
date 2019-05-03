@@ -7,7 +7,10 @@ Demo_0.4_audio adds the function that record one's voice therefore give back the
 
 ## Requirements
  ### For PC Users
- 
+ Install reqirements
+ ```
+ conda install tkinter, pillow
+ ```
  
  ### For Raspberry Pi installation
 
@@ -22,7 +25,10 @@ Demo_0.4_audio adds the function that record one's voice therefore give back the
  source ~/.bashrc
  conda update conda
  ```
-
+ Install reqirements
+ ```
+ conda install tkinter, pillow
+ ```
 ## Demo_0.3 
 
  First the Program will give the default imformation for setup
