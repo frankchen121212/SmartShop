@@ -1,7 +1,10 @@
 from tkinter import *
 import tkinter as tk
-import pandas as pd
+
+import csv
 from PIL import Image, ImageTk
+import time
+
 
 def get_screen_size(window):
     return window.winfo_screenwidth(), window.winfo_screenheight()
@@ -15,64 +18,70 @@ def center_window(root, width, height):
 
     root.geometry(size)
 def show_information_guide():
-    priceLabel=tk.Label(root,text="商品价格：",font=("黑体",15),justify="left")
+    titleLabel = tk.Label(root, text="欢迎使用智能仓储系统！" + '\n', font=("微软雅黑", 20))
+    titleLabel.grid(row=0, columnspan=6, sticky=W + E + N + S)
+
+    priceLabel=tk.Label(root,text="商品价格",font=("黑体",15),justify="left",fg='black')
     priceLabel.grid(column=0,row=0)
-    nameLable=tk.Label(root,text="商品名称：",font=("黑体",15))#左对齐
+    nameLable=tk.Label(root,text="商品信息",font=("黑体",15),fg='black')#左对齐
     nameLable.grid(column=0,row=1)
-    codeLabel = tk.Label(root, text="条形码：",font=("黑体",15),relief="sunken",borderwidth=5)  # 左对齐
+    codeLabel = tk.Label(root, text="条形码",font=("黑体",15),relief="sunken",borderwidth=5,fg='black')  # 左对齐
     codeLabel.grid(column=0,row=2)
-    imageLabel = tk.Label(root, text="\n******【商品图片】******\n", font=("黑体", 15), justify="left")
-    imageLabel.grid(column=2, row=0)
+
 
 def show_information():
-    global  price ,name
-    scan_the_iteam()
-    # print("进入show_information函数")
-    price = tk.Label(root, text='\n\n'+item_price+' 元', font=("宋体", 20),fg='blue')
-    price.grid(column=1, row=0)
-    # print("show_information函数price："+item_price)
-    name=tk.Label(root,text='\n\n'+item_name,font=("宋体",20),fg='blue')
-    name.grid(column=1,row=1)
-    # print("进入show_information函数name"+item_name)
-
-def scan_the_iteam():
-    # print("进入scan_the_iteam函数")
+    global  price, name
     global Code
     global item_number, item_price, item_name
-    n = 0  # 计数变量，用于确定条码所在行
-    for i_code in Iterms['code']:  # 循环扫描文件中’code‘一列
-        # print("i_code:  "+str(i_code)+"此时Code="+str(Code))
-        if str(i_code) == Code:
-            # print("成功返回商品序号，price，name\n")
-            # print("商品序号返回为：" +str(n+1))
-            # print("price返回为："+str(Iterms.iloc[n,2]))
-            # print("name返回为：" + str(Iterms.iloc[n,1]))
-            item_number= str(n+1)
-            item_price=str(Iterms.iloc[n,2])
-            item_name=str(Iterms.iloc[n,1]) # 匹配成功则输出相关信息
+
+    # print("进入show_information函数")
+    price = tk.Label(root, text='\n\n'+item_price+' Yuan', font=("Times", 20),fg='red')
+    price.grid(column=1, row=0)
+    # print("show_information函数price："+item_price)
+    name=tk.Label(root,text='\n\n'+item_name,font=("Times",20),fg='red')
+    name.grid(column=1,row=1)
+
+    # print("进入show_information函数name"+item_name)
+
+
+def scan_the_iteam():
+    print("进入scan_the_iteam函数")
+    global Code
+    global item_number, item_price, item_name
+    # ['\ufeffcode', 'name', 'price']
+    # ['6921168509256 ', '农夫山泉', '3']
+    # ['6931487800156 ', '统一冰红茶', '4']
+    i_row = 0
+    Iterms_csv = csv.reader(open('Iterms.csv', 'r', encoding='utf-8'))
+    for row in Iterms_csv:  # 循环扫描文件中’code‘一列
+        print(row)
+        if (Code in row[0]) :
+            item_number= str(i_row)
+            item_name = str(row[1])  # 匹配成功则输出相关信息
+            item_price=str(row[2])
             #返回商品序号，price，name
-        n = n + 1
-    return 'default','***','暂时还未录入商品'  # 返回n,图片查找标识
+        i_row = i_row + 1
+
 ########从录入窗口获取条形码字符串，并清空窗口
 def clean_the_code(event=None):
     # print("进入clean_the_code函数")
-    global Code,Old_Code
+    global Code
     global item_number, item_price, item_name
     global price, name, imgLabel,imgLabel_noitem,imgLabel_price
+
     Code = e.get()
-    # if Code is not Old_Code :
-        # print("***********清除**********")
     price.grid_remove()
     name.grid_remove()
     imgLabel.grid_remove()
     imgLabel_noitem.grid_remove()
     imgLabel_price.grid_remove()
 
-    Old_Code=Code
-    print('Code--{}'.format(Code))
+    print('主函数code={}'.format(Code))
+
     if len(Code) == 13:
         clean_the_input()
         #显示商品价格，名称
+        scan_the_iteam()
         show_information()
         #显示商品图片
         photo_dir = item_number + '.gif'
@@ -83,9 +92,9 @@ def clean_the_code(event=None):
         imgLabel.grid(column=2, row=1)
 
         #显示价格二维码
-        print('item_price:'+item_price)
+        #print('item_price:'+item_price)
         if(item_price == '3'):
-            price_pay = tk.Label(root, text='\n请扫描下方二维码付款\n', font=("宋体", 15), bg="#AAAABB", fg="white")
+            price_pay = tk.Label(root, text='\n ***感谢购买此商品*** \n', font=("Times", 15), bg="#AAAABB", fg="white")
             price_pay.grid(column=3, row=0)
             photo_price_dir='3yuan.gif'
             image_of_price= Image.open(photo_price_dir)
@@ -93,7 +102,7 @@ def clean_the_code(event=None):
             imgLabel_price=tk.Label(root,image=Tkimage_price)
             imgLabel_price.grid(column=3,row=1)
         if (item_price == '4'):
-            price_pay = tk.Label(root, text='\n请扫描下方二维码付款\n', font=("宋体", 15), bg="#AAAAAA", fg="white")
+            price_pay = tk.Label(root, text='\n ***感谢购买此商品*** \n',font=("Times", 15), bg="#AAAAAA", fg="white")
             price_pay.grid(column=3, row=0)
             photo_price_dir = '4yuan.gif'
             image_of_price = Image.open(photo_price_dir)
@@ -105,7 +114,6 @@ def clean_the_code(event=None):
         #       "第一次")
         root.mainloop()
     else:
-
         item_number, item_price, item_name = 'Noitem', '***', '***'
         clean_the_input()
         show_information()
@@ -120,30 +128,30 @@ def clean_the_code(event=None):
         imgLabel_price = tk.Label(root, image=Tkimage_price)
         imgLabel_price.grid(column=3, row=1)
         root.mainloop()
-
 def clean_the_input(event=None):
+    time.sleep(1)
     entry_window.delete(0,END)
 
 
-
-
-
 if __name__ =="__main__":
-    global Code,Old_Code
+    global Code
     global item_number, item_price, item_name
     global price, name,imgLabel,imgLabel_noitem,imgLabel_price
     Code='default'
-    Old_Code='default'
+
     item_number, item_price, item_name = 'default', '***', '***'
-
-
     root = Tk(className="Smart Shop")
-    center_window(root, 800, 600)
-    root.resizable(width=1200, height=1000)
+    center_window(root, 800, 550)
+    root.resizable(width=800, height=600)
 
-
+    # background_image = Image.open('background.gif')
+    # image_background = ImageTk.PhotoImage(background_image)
+    # background_label = tk.Label(root,image=image_background)
+    # background_label.place(x=0, y=0, relwidth=1, relheight=1)
     #弹窗输入条形码文字设置
-    Iterms = pd.read_csv('Iterms.csv')  # 读取CSV文件
+    #Iterms = pd.read_csv('Iterms.csv')  # 读取CSV文件
+    Iterms_csv = csv.reader(open('Iterms.csv','r',encoding='utf-8'))
+
     show_information_guide()
 
     # 扫码枪扫取数据
@@ -156,7 +164,7 @@ if __name__ =="__main__":
     #print("主函数中的价格(main)：" + item_price)
     #print("主函数中的名称(main)：" + item_name)
 
-    ################show图片##################
+    ################ get the first default image ##################
     if (Code  is 'default'):
         item_number, item_price, item_name = 'default', '***', '***'
         show_information()
@@ -175,6 +183,7 @@ if __name__ =="__main__":
         imgLabel_price = tk.Label(root, image=Tkimage_price)
         imgLabel_price.grid(column=3, row=1)
     #######################loop##############################
+
     root.mainloop()
 
 
