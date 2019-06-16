@@ -18,14 +18,14 @@ def center_window(root, width, height):
 
     root.geometry(size)
 def show_information_guide():
-    titleLabel = tk.Label(root, text="欢迎使用智能仓储系统！" + '\n', font=("微软雅黑", 20))
+    titleLabel = tk.Label(root, text="Welcome!" + '\n', font=("微软雅黑", 20))
     titleLabel.grid(row=0, columnspan=6, sticky=W + E + N + S)
 
-    priceLabel=tk.Label(root,text="商品价格",font=("黑体",15),justify="left",fg='black')
+    priceLabel=tk.Label(root,text="Price",font=("黑体",15),justify="left",fg='black')
     priceLabel.grid(column=0,row=0)
-    nameLable=tk.Label(root,text="商品信息",font=("黑体",15),fg='black')#左对齐
+    nameLable=tk.Label(root,text="Information",font=("黑体",15),fg='black')#左对齐
     nameLable.grid(column=0,row=1)
-    codeLabel = tk.Label(root, text="条形码",font=("黑体",15),relief="sunken",borderwidth=5,fg='black')  # 左对齐
+    codeLabel = tk.Label(root, text="Bar Code",font=("黑体",15),relief="sunken",borderwidth=5,fg='black')  # 左对齐
     codeLabel.grid(column=0,row=2)
 
 
@@ -67,10 +67,11 @@ def clean_the_code(event=None):
     # print("进入clean_the_code函数")
     global Code
     global item_number, item_price, item_name
-    global price, name, imgLabel,imgLabel_noitem,imgLabel_price
+    global price, name, imgLabel,imgLabel_noitem,imgLabel_price,price_pay
 
     Code = e.get()
     price.grid_remove()
+    price_pay.grid_remove()
     name.grid_remove()
     imgLabel.grid_remove()
     imgLabel_noitem.grid_remove()
@@ -94,7 +95,7 @@ def clean_the_code(event=None):
         #显示价格二维码
         #print('item_price:'+item_price)
         if(item_price == '3'):
-            price_pay = tk.Label(root, text='\n ***感谢购买此商品*** \n', font=("Times", 15), bg="#AAAABB", fg="white")
+            price_pay = tk.Label(root, text='\n ***Thank You For Buying*** \n', font=("Times", 15), bg="#AAAABB", fg="white")
             price_pay.grid(column=3, row=0)
             photo_price_dir='3yuan.gif'
             image_of_price= Image.open(photo_price_dir)
@@ -102,7 +103,7 @@ def clean_the_code(event=None):
             imgLabel_price=tk.Label(root,image=Tkimage_price)
             imgLabel_price.grid(column=3,row=1)
         if (item_price == '4'):
-            price_pay = tk.Label(root, text='\n ***感谢购买此商品*** \n',font=("Times", 15), bg="#AAAAAA", fg="white")
+            price_pay = tk.Label(root, text='\n ***Thank You For Buying*** \n',font=("Times", 15), bg="#AAAAAA", fg="white")
             price_pay.grid(column=3, row=0)
             photo_price_dir = '4yuan.gif'
             image_of_price = Image.open(photo_price_dir)
@@ -136,12 +137,12 @@ def clean_the_input(event=None):
 if __name__ =="__main__":
     global Code
     global item_number, item_price, item_name
-    global price, name,imgLabel,imgLabel_noitem,imgLabel_price
+    global price, name,imgLabel,imgLabel_noitem,imgLabel_price,price_pay
     Code='default'
 
     item_number, item_price, item_name = 'default', '***', '***'
     root = Tk(className="Smart Shop")
-    center_window(root, 800, 550)
+    center_window(root, 900, 600)
     root.resizable(width=800, height=600)
 
     # background_image = Image.open('background.gif')
@@ -175,7 +176,7 @@ if __name__ =="__main__":
         imgLabel.grid(column=2, row=1, sticky=E)
         imgLabel_noitem = tk.Label(root, image=Tkimage)  # 把图片整合到标签类中
         imgLabel.grid(column=2, row=1, sticky=E)
-        price_pay = tk.Label(root, text='\n请扫描下方二维码付款\n', font=("宋体", 15), bg="#AAAABB", fg="white")
+        price_pay = tk.Label(root, text='\nPleace Scan the Code Below\n', font=("宋体", 15), bg="#AAAABB", fg="white")
         price_pay.grid(column=3, row=0)
         photo_price_dir = 'default_price.gif'
         image_of_price = Image.open(photo_price_dir)

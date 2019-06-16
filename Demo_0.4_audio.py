@@ -3,7 +3,6 @@ import tkinter as tk
 import csv
 from PIL import Image, ImageTk
 import time
-import numpy as np
 from pyaudio import PyAudio,paInt16
 import wave
 import json
@@ -23,7 +22,7 @@ def show_images():
     # 显示价格二维码
     print('item_price:' + item_price)
     if (item_price == '3'):
-        price_pay = tk.Label(root, text='\n请扫描下方二维码付款\n', font=("宋体", 15), bg="#AAAABB", fg="white")
+        price_pay = tk.Label(root, text='\nThank You For Buying\n', font=("宋体", 15), bg="#AAAABB", fg="white")
         price_pay.grid(column=3, row=0)
         photo_price_dir = '3yuan.gif'
         image_of_price = Image.open(photo_price_dir)
@@ -31,7 +30,7 @@ def show_images():
         imgLabel_price = tk.Label(root, image=Tkimage_price)
         imgLabel_price.grid(column=3, row=1)
     elif (item_price == '4'):
-        price_pay = tk.Label(root, text='\n请扫描下方二维码付款\n', font=("宋体", 15), bg="#AAAAAA", fg="white")
+        price_pay = tk.Label(root, text='\nThank You For Buying\n', font=("宋体", 15), bg="#AAAAAA", fg="white")
         price_pay.grid(column=3, row=0)
         photo_price_dir = '4yuan.gif'
         image_of_price = Image.open(photo_price_dir)
@@ -61,27 +60,27 @@ def center_window(root, width, height):
 
     root.geometry(size)
 def show_information_guide():
-    priceLabel=tk.Label(root,text="商品价格：",font=("黑体",15),justify="left")
+    titleLabel = tk.Label(root, text="Welcome!" + '\n', font=("微软雅黑", 20))
+    titleLabel.grid(row=0, columnspan=6, sticky=W + E + N + S)
+
+    priceLabel=tk.Label(root,text="Price",font=("黑体",15),justify="left",fg='black')
     priceLabel.grid(column=0,row=0)
-    nameLable=tk.Label(root,text="商品名称：",font=("黑体",15))#左对齐
+    nameLable=tk.Label(root,text="Information",font=("黑体",15),fg='black')#左对齐
     nameLable.grid(column=0,row=1)
-    codeLabel = tk.Label(root, text="条形码：",font=("黑体",15),relief="sunken",borderwidth=5)  # 左对齐
+    codeLabel = tk.Label(root, text="Bar Code",font=("黑体",15),relief="sunken",borderwidth=5,fg='black')  # 左对齐
     codeLabel.grid(column=0,row=2)
-    imageLabel = tk.Label(root, text="\n******【商品图片】******\n", font=("黑体", 15), justify="left")
-    imageLabel.grid(column=2, row=0)
+
 def show_information():
     global  price, name
     global Code
     global item_number, item_price, item_name
 
     # print("进入show_information函数")
-    price = tk.Label(root, text='\n\n'+item_price+' Yuan', font=("Times", 20),fg='blue',compound='center')
+    price = tk.Label(root, text='\n\n'+item_price+' Yuan', font=("Times", 20),fg='red')
     price.grid(column=1, row=0)
     # print("show_information函数price："+item_price)
-    name=tk.Label(root,text='\n\n'+item_name,font=("Times",20),fg='blue')
+    name=tk.Label(root,text='\n\n'+item_name,font=("Times",20),fg='red')
     name.grid(column=1,row=1)
-    # print("进入show_information函数name"+item_name)
-
 
 def scan_the_iteam():
     print("进入scan_the_iteam函数")
@@ -113,7 +112,7 @@ def scan_the_item_by_name(voice_result):
     item_number, item_price, item_name = 'Noitem', '***', '***'
     for row in Iterms_csv:  # 循环扫描文件中’code‘一列
         #print(row)
-        if (row[1] in voice_result):
+        if (row[3] in voice_result):
             item_number= str(i_row)
             item_name = str(row[1])  # 匹配成功则输出相关信息
             item_price=str(row[2])
@@ -123,19 +122,17 @@ def scan_the_item_by_name(voice_result):
 ########从录入窗口获取条形码字符串，并清空窗口
 def clean_the_code(event=None):
     # print("进入clean_the_code函数")
-    global Code,Old_Code
+    global Code
     global item_number, item_price, item_name
-    global price, name, imgLabel,imgLabel_noitem,imgLabel_price
+    global price, name, imgLabel,imgLabel_noitem,imgLabel_price,price_pay
 
     Code = e.get()
-    # if Code is not Old_Code :
-        # print("***********清除**********")
     price.grid_remove()
+    price_pay.grid_remove()
     name.grid_remove()
     imgLabel.grid_remove()
     imgLabel_noitem.grid_remove()
     imgLabel_price.grid_remove()
-    price_pay.grid_remove()
 
     Old_Code=Code
     print('Code--{}'.format(Code))
@@ -235,6 +232,7 @@ def show_res(buf):
         price.grid_remove()
         name.grid_remove()
         imgLabel.grid_remove()
+        price_pay.grid_remove()
         imgLabel_noitem.grid_remove()
         imgLabel_price.grid_remove()
         show_information()
@@ -243,6 +241,7 @@ def show_res(buf):
         item_number, item_price, item_name = 'Noitem', '***', '***'
         price.grid_remove()
         name.grid_remove()
+        price_pay.grid_remove()
         imgLabel.grid_remove()
         imgLabel_noitem.grid_remove()
         imgLabel_price.grid_remove()
@@ -288,14 +287,14 @@ if __name__ =="__main__":
     global token
     global Code,Old_Code
     global item_number, item_price, item_name
-    global price, name,imgLabel,imgLabel_noitem,imgLabel_price
+    global price, name,imgLabel,imgLabel_noitem,imgLabel_price,price_pay
     global voice_result
     Code='default'
     Old_Code='default'
     item_number, item_price, item_name = 'default', '***', '***'
     root = Tk(className="Smart Shop")
-    center_window(root, 1000, 600)
-    root.resizable(width=1200, height=1000)
+    center_window(root, 900, 600)
+    root.resizable(width=800, height=600)
 
     #弹窗输入条形码文字设置
     Iterms_csv = csv.reader(open('Iterms.csv', 'r', encoding='utf-8'))
@@ -322,7 +321,7 @@ if __name__ =="__main__":
         imgLabel.grid(column=2, row=1, sticky=E)
         imgLabel_noitem = tk.Label(root, image=Tkimage)  # 把图片整合到标签类中
         imgLabel.grid(column=2, row=1, sticky=E)
-        price_pay = tk.Label(root, text='\n请扫描下方二维码付款\n', font=("宋体", 15), bg="#AAAABB", fg="white")
+        price_pay = tk.Label(root, text='\nPlease Scan the Code Below\n', font=("宋体", 15), bg="#AAAABB", fg="white")
         price_pay.grid(column=3, row=0)
         photo_price_dir = 'default_price.gif'
         image_of_price = Image.open(photo_price_dir)
@@ -330,7 +329,7 @@ if __name__ =="__main__":
         imgLabel_price = tk.Label(root, image=Tkimage_price)
         imgLabel_price.grid(column=3, row=1)
     #######################loop##############################
-    record_button(root, "请说出您需要的商品名称", "录音", record_wave)
+    record_button(root, "Please Say your Item", "Record", record_wave)
     token = get_token()
     root.mainloop()
 
