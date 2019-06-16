@@ -51,3 +51,8 @@ Demo_0.4_audio adds the function that record one's voice therefore give back the
   </div>
   
 ## Demo_0.4_audio
+
+The Program with the audio record function can recoginze usr's voice and show the information of the good
+<div align="center">
+    <img src="example/4.PNG", width="300">
+</div>
